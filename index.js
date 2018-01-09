@@ -43,11 +43,8 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
     inputEl.value = '';
   }
 })
-
 //테이터베이스값알아내기
 //화면을 다시그리는 기능은 refreshTodos가 하도록 다시 짤것.
-
-
 async function refreshTodos() {
   //uid 알아내기
   const uid = firebase.auth().currentUser.uid;
@@ -70,28 +67,22 @@ async function refreshTodos() {
     wrapEl.appendChild(itemEl);
     itemEl.classList.add('txt')
     itemEl.textContent = title;  
-    // formEl.reset(); //form reset 화면리플레시
+    // formEl.reset(); //form reset 화면리플레시된다.???
     if (complete){
       wrapEl.classList.add('complete');
       itemEl.classList.add('textdeco');
     }
+    //화면그려주는일 이벤트안에서 하지말것
     wrapEl.addEventListener('click', async e => {
       const uid = firebase.auth().currentUser.uid;
-      if (!wrapEl.classList.contains('complete')) {
-        await firebase.database().ref(`/users/${uid}/todos/${todoId}`).update({
-          complete: true
-        });
+     
         // await firebase.database().ref(`/users/${uid}/todos/${id}`).update({
         //   complete: !false 고처볼것
-        wrapEl.classList.add('complete');
-        itemEl.classList.add('textdeco');
-      } else {
+       
         await firebase.database().ref(`/users/${uid}/todos/${todoId}`).update({
-          complete: false
+          complete: !false
         });
-        wrapEl.classList.remove('complete');
-        itemEl.classList.remove('textdeco');
-      }
+      
       refreshTodos();
     });
 
@@ -111,10 +102,6 @@ async function refreshTodos() {
   }
  
 }
-
-
-
-
 
 //로인인상태에 따라
 
