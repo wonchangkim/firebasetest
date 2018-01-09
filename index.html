@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="loginwrap">
+      <button class="loginbtn">login</button>
+    </div>
+    <h1>My To Do List</h1>
+    <!-- <form id="todo-form"> -->
+      <input id="todo-input" type="text" placeholder="Title..." autocomplete="off">
+      <button id="add-button">ADD</button>
+    <!-- </form> -->
+  </div>
+  <div id="todo-wrap">
+    <div class="todolist" id="todo-list"></div>
+  </div>
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyCSXb1UcmGf1V4W2XTjoa6-uHo8J0xRGiY",
+    authDomain: "todolist-firebase-1c267.firebaseapp.com",
+    databaseURL: "https://todolist-firebase-1c267.firebaseio.com",
+    projectId: "todolist-firebase-1c267",
+    storageBucket: "",
+    messagingSenderId: "401458218994"
+  };
+  firebase.initializeApp(config);
+</script>
+  <script src="./js/moment.js"></script>
+  <script src="./index.js"></script>
+
+
+
+</body>
+
+</html>
