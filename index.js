@@ -1,6 +1,6 @@
 //시간
 moment.locale('ko');
-const nowtime = moment().format('LLL');
+const nowtime = moment().format('MMMM Do, a h:mm:ss');
 
 //add버튼을 눌렀을때 새로운 엘리먼트에 넣어주고 보여주기
 const addButtonEl = document.querySelector('#add-button')
@@ -34,7 +34,8 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
     //uid를 가져오고 할일 추가 .push() 반환값은 promise await 안쓰면 밑으로 바로 넘어간다(refreshTodos가 바로 실행)
     await firebase.database().ref(`/users/${uid}/todos`).push({
       title: e.currentTarget.value,
-      complete: false
+      complete: false,
+      time: nowtime
     })
     // ref() 위치를 가르키는 참조
     refreshTodos();
@@ -49,18 +50,19 @@ async function refreshTodos() {
   //uid 알아내기
   const uid = firebase.auth().currentUser.uid;
   const snapshot = await firebase.database().ref(`/users/${uid}/todos`).once('value');
+  // const orderTime = await firebase.database().ref(`/users/${uid}/todos`).orderByValue()
   //호출결과는 promise
   const todos = snapshot.val(); // todos에 todos의 객체가 저장된다.
   console.log(todos);
 
   listEl.innerHTML = '';
 
-  for (let [todoId, {title,complete}] of Object.entries(todos)) {
+  for (let [todoId, {title,complete,time}] of Object.entries(todos)) {
     //Object.entries 배열이 만들어진다.
     const wrapEl = document.createElement('div');
     const itemEl = document.createElement('div');
-    let closebox = document.createElement('div');
-    let checkbox = document.createElement('div');
+    const closebox = document.createElement('div');
+    const checkbox = document.createElement('div');
     //add(todo.title, todo.complete, todoId)
     listEl.appendChild(wrapEl);
     wrapEl.classList.add('wrap');
@@ -68,6 +70,12 @@ async function refreshTodos() {
     itemEl.classList.add('txt')
     itemEl.textContent = title;  
     // formEl.reset(); //form reset 화면리플레시된다.???
+    //시간추가
+    const timeEl = document.createElement('span')
+    timeEl.textContent = time;
+    wrapEl.appendChild(timeEl);
+    timeEl.classList.add('padding');
+    
     if (complete){
       wrapEl.classList.add('complete');
       itemEl.classList.add('textdeco');
@@ -78,7 +86,7 @@ async function refreshTodos() {
      
         // await firebase.database().ref(`/users/${uid}/todos/${id}`).update({
         //   complete: !false 고처볼것
-       
+        // 수정해야됨
         await firebase.database().ref(`/users/${uid}/todos/${todoId}`).update({
           complete: !false
         });
