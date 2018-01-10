@@ -247,7 +247,7 @@ body {
   .inputshow {
   top: 20px;
   opacity: 1;
-   transition: all 1s ease-in-out;
+   transition: all 0.2s ease-in-out;
 }
 .edit {
   position: absolute;
@@ -264,7 +264,7 @@ body {
     padding: 10px 20px 10px 10px;
     border: 1px solid #EEEEEE;
   height: 100px;
-  transition: all 1s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 /* .editinputEl__style{
   width: 200px;
