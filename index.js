@@ -1,6 +1,6 @@
 //시간
 moment.locale('ko');
-const nowtime = moment().format('MMMM Do, a h:mm:ss');
+
 
 //add버튼을 눌렀을때 새로운 엘리먼트에 넣어주고 보여주기
 const addButtonEl = document.querySelector('#add-button')
@@ -28,6 +28,7 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
 
 //인풋엔터
   inputEl.addEventListener('keypress', async e => {
+    const nowtime = moment().format('MMMM Do, a h:mm:ss');
   if (e.key === 'Enter' && e.currentTarget.value !== '') {
     listEl.classList.add('todo-list--loading');
     const uid = firebase.auth().currentUser.uid;
@@ -88,7 +89,7 @@ async function refreshTodos() {
         //   complete: !false 고처볼것
         // 수정해야됨
         await firebase.database().ref(`/users/${uid}/todos/${todoId}`).update({
-          complete: !false
+          complete: !complete
         });
       
       refreshTodos();
