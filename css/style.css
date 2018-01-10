@@ -219,7 +219,58 @@ body {
   color: #EEEEEE;
   display: none;
 }
+.edit__inputbox{
+  height: 3px;
+  background-color: #F44336;
+  position: relative;
+  overflow: hidden;
+}
+.editinputEl__style{
+  width: 350px;
+  height: 50px;
+  border-radius: 10px;
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #c897ac;
+  opacity: 0;
+  padding-left: 10px;
+  padding-top: 5px;
+  line-height: 20px;
+  font-size: 15px;
+  color: white;
+  outline: none;
+  border: 0;
+}
 
+  .inputshow {
+  top: 20px;
+  opacity: 1;
+   transition: all 1s ease-in-out;
+}
+.edit {
+  position: absolute;
+  right: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  background-color: #CCBA14;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.show{
+    padding: 10px 20px 10px 10px;
+    border: 1px solid #EEEEEE;
+  height: 100px;
+  transition: all 1s ease-in-out;
+}
+/* .editinputEl__style{
+  width: 200px;
+  height: 100px;
+  background-color: #CCBA14;
+} */
 .checkbox {
   background-color: #3D8C99;
   width: 200px;

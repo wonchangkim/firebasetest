@@ -45,6 +45,7 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
     inputEl.value = '';
   }
 })
+
 //테이터베이스값알아내기
 //화면을 다시그리는 기능은 refreshTodos가 하도록 다시 짤것.
 async function refreshTodos() {
@@ -60,16 +61,31 @@ async function refreshTodos() {
 
   for (let [todoId, {title,complete,time}] of Object.entries(todos)) {
     //Object.entries 배열이 만들어진다.
+    const listwrap = document.createElement('div');
     const wrapEl = document.createElement('div');
     const itemEl = document.createElement('div');
     const closebox = document.createElement('div');
     const checkbox = document.createElement('div');
+    const editEl = document.createElement('div');
+    const editboxEl = document.createElement('div');
+    const editinputEl = document.createElement('input');
     //add(todo.title, todo.complete, todoId)
+    listwrap.appendChild(wrapEl);
     listEl.appendChild(wrapEl);
+    listEl.appendChild(editboxEl);
+    wrapEl.appendChild(editEl);
+    editboxEl.appendChild(editinputEl);
+    editboxEl.classList.add('edit__inputbox');
+    // editinputEl.setAttribute('contenteditable', true);
+    editinputEl.placeholder = '수정사항을 입력하세요';
+   
+    editinputEl.classList.add('editinputEl__style');
     wrapEl.classList.add('wrap');
     wrapEl.appendChild(itemEl);
-    itemEl.classList.add('txt')
+    itemEl.classList.add('txt');
     itemEl.textContent = title;  
+    
+    editEl.classList.add('edit');
     // formEl.reset(); //form reset 화면리플레시된다.???
     //시간추가
     const timeEl = document.createElement('span')
@@ -95,6 +111,30 @@ async function refreshTodos() {
       refreshTodos();
     });
 
+    // const edit = document.querySelector('.edit');
+    editEl.addEventListener('click', async e =>{
+      e.stopPropagation();
+      console.log("클릭");
+      if (e.currentTarget.parentNode.nextSibling.classList.contains('show')){
+        e.currentTarget.parentNode.nextSibling.classList.remove('show')
+        e.currentTarget.parentNode.nextSibling.firstChild.classList.remove('inputshow')
+      }else{
+        e.currentTarget.parentNode.nextSibling.classList.add('show');
+        e.currentTarget.parentNode.nextSibling.firstChild.classList.add('inputshow')
+      }
+      editinputEl.addEventListener('keypress' , async e=> {
+        if (e.key === 'Enter' && e.currentTarget.value !== '') {
+          const uid = firebase.auth().currentUser.uid;
+          await firebase.database().ref(`/users/${uid}/todos/${todoId}`).update({
+            title: editinputEl.value
+
+          });
+          refreshTodos();
+        }
+      })
+      
+      // refreshTodos();
+    })
     const close = document.createElement('div');
     close.classList.add('close');
     wrapEl.appendChild(close);
