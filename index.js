@@ -9,6 +9,8 @@ const inputEl = document.querySelector('#todo-input');
 const listEl = document.querySelector('#todo-list');
 const todowrap = document.querySelector('#todo-wrap');
 
+
+
 //로그인 
 
 document.querySelector('.loginbtn').addEventListener('click', async e => {
@@ -36,7 +38,8 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
     await firebase.database().ref(`/users/${uid}/todos`).push({
       title: e.currentTarget.value,
       complete: false,
-      time: nowtime
+      time: nowtime,
+      newtime: new Date().getTime()* -1
     })
     // ref() 위치를 가르키는 참조
     refreshTodos();
@@ -46,21 +49,38 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
   }
 })
 
-//테이터베이스값알아내기
-//화면을 다시그리는 기능은 refreshTodos가 하도록 다시 짤것.
+
+// 테이터베이스값알아내기
+// 화면을 다시그리는 기능은 refreshTodos가 하도록 다시 짤것.
 async function refreshTodos() {
   //uid 알아내기
   const uid = firebase.auth().currentUser.uid;
-  const snapshot = await firebase.database().ref(`/users/${uid}/todos`).once('value');
-  // const orderTime = await firebase.database().ref(`/users/${uid}/todos`).orderByValue()
-  //호출결과는 promise
-  const todos = snapshot.val(); // todos에 todos의 객체가 저장된다.
+  const todoId = firebase.database().ref(`/users/${uid}/todos`)
+  const snapshot = await todoId.orderByChild('newtime').once('value');
+  const orderTime = await firebase.database().ref(`/users/${uid}/todos`).orderByValue()
+  호출결과는 promise
+  const todos = items.val(); // todos에 todos의 객체가 저장된다.
   console.log(todos);
+  const todosArr = Object.values(todos);
+  const newtodoArr = Object.values(todosArr)
+  console.log(todos)
+
+
+  // const uid = firebase.auth().currentUser.uid;
+  // const todoId = firebase.database().ref(`users`)
+  // todoId.orderByChild('newtime').on('value', showdata)
+  // function showdata(items) {
+  //   items.forEach(function (child) {
+  //     let todos = child.val()
+  //     console.log(Object.entries(todos,todos))
+  //   })
+  // }
+
 
   listEl.innerHTML = '';
 
-  for (let [todoId, {title,complete,time}] of Object.entries(todos)) {
-    //Object.entries 배열이 만들어진다.
+  for (let [todos, [todois, { title, complete, time }] ] of Object.entries(todos || '')) {
+//     //Object.entries 배열이 만들어진다.
     const listwrap = document.createElement('div');
     const wrapEl = document.createElement('div');
     const itemEl = document.createElement('div');
