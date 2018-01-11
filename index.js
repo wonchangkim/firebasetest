@@ -25,7 +25,7 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
   console.log('로그인 성공');
   console.log(user);
   document.querySelector('.loginwrap').classList.add('none');
-  refreshTodos();
+  // refreshTodos();
 })
 
 //인풋엔터
@@ -42,7 +42,7 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
       newtime: new Date().getTime()* -1
     })
     // ref() 위치를 가르키는 참조
-    refreshTodos();
+    // refreshTodos();
     // push가 잘됬는지 확인하고 코드 실행된다.
     listEl.classList.remove('todo-list--loading')
     inputEl.value = '';
@@ -54,27 +54,27 @@ document.querySelector('.loginbtn').addEventListener('click', async e => {
 // 화면을 다시그리는 기능은 refreshTodos가 하도록 다시 짤것.
 async function refreshTodos() {
   //uid 알아내기
-  const uid = firebase.auth().currentUser.uid;
-  const todoId = firebase.database().ref(`/users/${uid}/todos`)
-  const snapshot = await todoId.orderByChild('newtime').once('value');
-  const orderTime = await firebase.database().ref(`/users/${uid}/todos`).orderByValue()
-  호출결과는 promise
-  const todos = items.val(); // todos에 todos의 객체가 저장된다.
-  console.log(todos);
-  const todosArr = Object.values(todos);
-  const newtodoArr = Object.values(todosArr)
-  console.log(todos)
-
-
   // const uid = firebase.auth().currentUser.uid;
-  // const todoId = firebase.database().ref(`users`)
-  // todoId.orderByChild('newtime').on('value', showdata)
-  // function showdata(items) {
-  //   items.forEach(function (child) {
-  //     let todos = child.val()
-  //     console.log(Object.entries(todos,todos))
-  //   })
-  // }
+  // const todoId = firebase.database().ref(`/users/${uid}/todos`)
+  // const snapshot = await todoId.orderByChild('newtime').once('value');
+  // const orderTime = await firebase.database().ref(`/users/${uid}/todos`).orderByValue()
+  // 호출결과는 promise
+  // const todos = items.val(); // todos에 todos의 객체가 저장된다.
+  // console.log(todos);
+  // const todosArr = Object.values(todos);
+  // const newtodoArr = Object.values(todosArr)
+  // console.log(todos)
+
+
+  const uid = firebase.auth().currentUser.uid;
+  const todoId = firebase.database().ref(`users`)
+  todoId.orderByChild('newtime').on('value', showdata)
+  function showdata(items) {
+    items.forEach(function (child) {
+      let todos = child.val()
+      console.log(Object.entries(todos,todos))
+    })
+  }
 
 
   listEl.innerHTML = '';
